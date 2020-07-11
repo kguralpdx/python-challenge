@@ -3,47 +3,47 @@ import os
 import csv
 
 # Set path for file
-csvpath = os.path.join("..", "Resources", "budget_data.csv")
+csvpath = os.path.join('Resources', "budget_data.csv")
 
-# Lists to store data
-months = []
-total = []
-avg_changes = []
-greatest_profit_inc_date = []
-greatest_profit_inc_amt = []
-greatest_profit_dec_date = []
-greatest_profit_dec_amt = []
+# set final variables to start at 0
+months = 0
+net_total = 0
+previous_row_profit = 0
+current_profit_inc = 0
+current_profit_dec = 0
 
 # Open the CSV file
 with open(csvpath) as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=",")
-    csv_header = next(csvreader)
-    print(csv_header)
+     csvreader = csv.reader(csvfile, delimiter=",")
+     csv_header = next(csvreader)
 
-#     # Loop through looking for the video
-#     for row in csvreader:
-#         if row[0] == video:
-#             print(row[0] + " is rated " + row[1] + " with a rating of " + row[5])
+     for row in csvreader:
+         months += 1 #counting the number of months
+         int_net_total = int(row[1]) # current row's profit/loss
+         net_total += int_net_total # running total of profit/loss
+         if previous_row_profit == 0:
+             first_profit_loss = int(row[1])
+         # Get the greatest increase/decrease in profits/losses
+         if int(row[1]) - previous_row_profit > current_profit_inc:
+             current_profit_inc = int(row[1]) - previous_row_profit
+             current_profit_inc_month = row[0]
+         if int(row[1]) - previous_row_profit < current_profit_dec:
+             current_profit_dec = int(row[1]) - previous_row_profit
+             current_profit_dec_month = row[0]
+         previous_row_profit = int(row[1])
 
-#             # BONUS: Set variable to confirm we have found the video
-#             found = True
+# populate list for greatest increase in profits and greatest decrease in losses
+greatest_profit_loss_list = [current_profit_inc_month, current_profit_inc, current_profit_dec_month, current_profit_dec]
 
-#             # BONUS: Stop at first results to avoid duplicates
-#             break
+months
+net_total
+last_profit_loss = int_net_total
+avg_changes = (last_profit_loss - first_profit_loss)/(months - 1)
 
-
-
-
-# # Set variable for output file
-# output_file = os.path.join("financial_analysis.txt")
-
-# #  Open the output file
-# with open(output_file, "w") as datafile:
-#     writer = csv.writer(datafile)
-
-#     # Write the header row
-#     # writer.writerow(["Title", "Course Price", "Subscribers", "Reviews Left",
-#     #                 "Percent of Reviews", "Length of Course"])
-
-#     # Write in zipped rows
-#     writer.writerows(cleaned_csv)
+print("Financial Analysis")
+print("--------------------------")
+print(f"Total Months:  {months}")
+print(f"Total:  ${net_total}")
+print("Average Change:  $" + "{:.2f}".format(avg_changes)) # Got formatting help from https://www.w3resource.com/python-exercises/string/python-data-type-string-exercise-30.php
+print(f"Greatest Increase in Profits:  {greatest_profit_loss_list[0]} (${greatest_profit_loss_list[1]})")
+print(f"Greatest Decrease in Profits:  {greatest_profit_loss_list[2]} (${greatest_profit_loss_list[3]})")
