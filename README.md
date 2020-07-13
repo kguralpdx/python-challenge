@@ -17,7 +17,7 @@ This challenge entailed analyzing financial data to calculate the total number o
 
 ### Challenge 2 - PyPoll
 
-This challenge dealt with analyzing poll data to calculate the total number of votes cast, the complete iist of all candidates and each of their percentage of votes won along with the total number of votes they received. The winner was also determined based on popular vote. The results will be displayed in the terminal window as well as in a text file called analysis.txt.  
+This challenge dealt with analyzing poll data to calculate the total number of votes cast, the complete list of all candidates and each of their percentage of votes won along with the total number of votes they received. The winner was also determined based on popular vote. The results will be displayed in the terminal window as well as in a text file called analysis.txt.  
 
 #### Files
 
