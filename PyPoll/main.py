@@ -6,14 +6,13 @@ import csv
 csvpath = os.path.join('Resources', "election_data.csv")
 
 # open the dataset, skipping the first row which contains headers
-with open(csvpath) as csvfile:
+with open(csvpath, encoding='utf-8') as csvfile:
     reader = csv.reader(csvfile)
     csv_header = next(reader)
 
     vote_count = {}
     current_vote = 0
     tally = 0
-    winner_votes = 0
 
     # loop through the rows in the file
     # the candidate totals and the try/except parts were from Terra's after office hours session
@@ -34,30 +33,48 @@ with open(csvpath) as csvfile:
         except:
             vote_count[candidate] = 1
 
-    # get the winner by looping through the vote_count dictionary to compare vote totals and tben top vote getter into a new dictionary
-    # Got help from https://realpython.com/iterate-through-dictionary-python/#a-few-words-on-dictionaries
-    top_vote_getter = {}
-    for key, value in vote_count.items():
-        if value > winner_votes:
-            winner_votes = value
-            winner = key
+# define the function to get the percentage of votes per candidate, the parameter is a dictionary
+def percent_of_votes(v):
+    for key in v:
+        vote_percent = (v[key]/tally) * 100
+        print(f"{key}:  {round(vote_percent)}.000%  ({v[key]})")
 
-#winner = max(vote_count, key=vote_count.get)  
+# get the winner by looping through the vote_count dictionary to compare vote totals and tben top vote getter into a new dictionary
+# Got help from https://realpython.com/iterate-through-dictionary-python/#a-few-words-on-dictionaries
+top_vote_getter = {}
+winner_votes = 0
 
+for key, value in vote_count.items():
+    if value > winner_votes:
+        winner_votes = value
+        winner = key
+
+# Set variable for output file
+output_file = os.path.join("analysis", "analysis.txt")
+
+#  Open the output file
+with open(output_file, "w") as datafile:
+    datafile.write("Election Results \n")
+    datafile.write("-----------------------------\n")
+    datafile.write("Total Votes:  " + str(tally) + "\n")
+    datafile.write("-----------------------------\n")
+    #for line in 
+    #datafile.writelines(percent_of_votes(vote_count))
+    datafile.write("-----------------------------\n")
+    datafile.write("Winner:  " + winner + "\n")
+    datafile.write("-----------------------------\n")
+
+
+
+
+# Display the results in the Terminal
 print("Election Results")
 print("-----------------------------")
 print(f"Total Votes:  {tally}")
 print("-----------------------------")
-for key, value in vote_count.items(): # got help with this from https://realpython.com/iterate-through-dictionary-python/#a-few-words-on-dictionaries
-    print(f"{key}:  ({value})")
+# for key, value in vote_count.items(): 
+#     print(f"{key}:  ({value})")
+percent_of_votes(vote_count)
 print("-----------------------------")
 print(f"Winner:  {winner}")
-#print(winner)
-# need to get
-# total number of votes
-# complete list of candidates who received votes
-# percentage of votes each candidate received
-# total number of votes each candidate received
-# winner of the election based on popular vote
-# 
-  
+print("-----------------------------")
